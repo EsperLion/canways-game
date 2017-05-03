@@ -1,7 +1,7 @@
 var gameManager = (function (canways) {
 
     var game = null;
-    var baseSpeed = 1000;
+    var baseSpeed = 700;
     var gameSpeed = baseSpeed;
     var states = {
         paused: 'paused',
@@ -68,9 +68,11 @@ var gameManager = (function (canways) {
     };
 
     function setSpeed(ratio) {
-        stop();
         gameSpeed = baseSpeed / ratio;
-        go();
+        if (currState === states.play) {
+            stop();
+            go();
+        }
     };
 
     function disable (id) {

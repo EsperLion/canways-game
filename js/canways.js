@@ -33,12 +33,11 @@ var canways = (function () {
     function generateFiled () {
         for (var i = 0; i < tilesOptions.rows; i++) {
             tiles[i] = [];
-            initialTilesState[i] = [];
             for (var j = 0; j < tilesOptions.cols; j++) {
                 tiles[i][j] = _.random(100) > 65 ? true : false;
-                initialTilesState[i][j] = tiles[i][j];
             }
         }
+        initialTilesState = _.clone(tiles);
     };
 
     function drawTile (tile, x, y) {
@@ -72,7 +71,7 @@ var canways = (function () {
             nextGen[i].length = tilesOptions.cols;
             _.fill(nextGen[i], false);
         }
-    }
+    };
 
     function genTile (tile, x, y) {
 
@@ -101,13 +100,11 @@ var canways = (function () {
     };
 
     function copyNextGen () {
-        for (var i = 0; i < tilesOptions.rows; i++)
-            tiles[i] = _.drop(nextGen[i],0);
+        tiles = _.clone(nextGen);
     };
 
     function retrieveInitialState () {
-        for (var i = 0; i < tilesOptions.rows; i++)
-            tiles[i] = _.drop(initialTilesState[i],0);
+        tiles = _.clone(initialTilesState);
     };
 
     return {

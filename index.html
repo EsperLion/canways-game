@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" data-ng-app="App">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .field {
+            position: relative;
+            width: 600px;
+            height: 600px;
+            margin: 50px auto;
+        }
+        .row {
+            position: relative;
+            width: 100%;
+        }
+        .row:before, .row:after {
+            content: '';
+            display: table;
+        }
+        .row:after {
+            clear: both;
+        }
+        .tile {
+            position: relative;
+            width: 3px;
+            height: 3px;
+            background: #fff;
+            float: left;
+        }
+        .tile.active {
+            background: #000;
+        }
+    </style>
+</head>
+<body data-ng-controller="Controller as vm">
+
+    <div class="field">
+        <div class="row" data-ng-repeat="row in vm.tiles track by $index">
+            <div class="tile" data-ng-repeat="tile in row track by $index" \
+                 data-ng-class="tile ? 'active' : ''"></div>
+        </div>
+    </div>
+
+    <!--<canvas id="canvas"></canvas>-->
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+
+
+    <script src="https://cdn.jsdelivr.net/lodash/4.17.4/lodash.min.js"></script>
+    <!--<script src="node_modules/phaser/build/phaser.min.js"></script>-->
+    <script src="app.js"></script>
+
+</body>
+</html>

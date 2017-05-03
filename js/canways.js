@@ -12,6 +12,8 @@ var canways = (function () {
 
     var tiles = [];
 
+    var initialTilesState = [];
+
     var nextGen = [];
 
     var tilesOptions = {
@@ -31,8 +33,10 @@ var canways = (function () {
     function generateFiled () {
         for (var i = 0; i < tilesOptions.rows; i++) {
             tiles[i] = [];
+            initialTilesState[i] = [];
             for (var j = 0; j < tilesOptions.cols; j++) {
                 tiles[i][j] = _.random(100) > 65 ? true : false;
+                initialTilesState[i][j] = tiles[i][j];
             }
         }
     };
@@ -99,13 +103,18 @@ var canways = (function () {
     function copyNextGen () {
         for (var i = 0; i < tilesOptions.rows; i++)
             tiles[i] = _.drop(nextGen[i],0);
-    }
+    };
 
+    function retrieveInitialState () {
+        for (var i = 0; i < tilesOptions.rows; i++)
+            tiles[i] = _.drop(initialTilesState[i],0);
+    };
 
     return {
         config: configCanvas,
         generateNext: genNextGen,
         draw: drawTiles,
-        generate: generateFiled
+        generate: generateFiled,
+        retrieve: retrieveInitialState
     };
 })();

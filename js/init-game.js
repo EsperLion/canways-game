@@ -1,16 +1,30 @@
+window.addEventListener('DOMContentLoaded', function (e) {
+    gameManager.setState(gameManager.states.init);
+});
 
-canways.config();
+document.getElementById('start').addEventListener('click', function () {
+    gameManager.setState(gameManager.states.play);
+});
 
-canways.generate();
+document.getElementById('pause').addEventListener('click', function () {
+    if (gameManager.currState() === gameManager.states.play)
+        gameManager.setState(gameManager.states.paused);
+    else if (gameManager.currState() === gameManager.states.paused)
+        gameManager.setState(gameManager.states.play);
+});
 
-canways.draw();
+document.getElementById('stop').addEventListener('click', function () {
+    gameManager.setState(gameManager.states.stoped);
+});
 
-var game = null;
+document.getElementById('gen').addEventListener('click', function () {
+    gameManager.generate();
+});
 
-game = setInterval(function () {
-    canways.generateNext();
-    canways.draw();
-}, 300);
+document.getElementById('speed').addEventListener('change', function (e) {
+    gameManager.setSpeed(e.srcElement.options[e.srcElement.selectedIndex].value);
+});
+
 
 
 

@@ -5,7 +5,7 @@ var concat = require('gulp-concat');
 gulp.task('default',['concat-js', 'watch']);
 
 gulp.task('concat-js', function () {
-   return gulp.src(['./js/canways.js', './js/*.js','!./js/game.js'])
+   return gulp.src(['./js/canways.js', './js/gameManager.js', './js/*.js','!./js/game.js'])
        .pipe(concat('game.js'))
        .pipe(gulp.dest('js/'));
 });

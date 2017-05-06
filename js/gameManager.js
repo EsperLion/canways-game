@@ -1,8 +1,11 @@
-var gameManager = (function (canways) {
+var gameManager = (function (conways) {
 
     var game = null;
-    var baseSpeed = 700;
+
+    var baseSpeed = 100;
+
     var gameSpeed = baseSpeed;
+
     var states = {
         paused: 'paused',
         play: 'play',
@@ -13,25 +16,25 @@ var gameManager = (function (canways) {
     var currState;
 
     function initGame () {
-        canways.config();
+        conways.config();
         generateNewFiled();
     };
 
     function stopGame () {
         stop();
-        canways.retrieve();
-        canways.draw();
+        conways.retrieve();
+        conways.draw();
     };
 
     function generateNewFiled () {
-        canways.generate();
-        canways.draw();
+        conways.generate();
+        conways.draw();
     };
 
     function go () {
         game = setInterval(function () {
-            canways.generateNext();
-            canways.draw();
+            conways.generateNext();
+            conways.draw();
         }, gameSpeed);
     };
 
@@ -82,11 +85,29 @@ var gameManager = (function (canways) {
         document.getElementById(id).disabled = false;
     };
 
+    function clickTile (e) {
+        conways.changeTileSate(e);
+    };
+
+    function showPopUp () {
+        var top = getComputedStyle(document.getElementById('pop-up')).top;
+        var show = null;
+        return function () {
+            document.getElementById('pop-up').style.top = '0px';
+            clearTimeout(show);
+            show = setTimeout(function () {
+                document.getElementById('pop-up').style.top = top;
+            },4000);
+        };
+    };
+
     return {
         setState: setState,
         states: states,
         generate: generateNewFiled,
         currState: getState,
-        setSpeed: setSpeed
+        setSpeed: setSpeed,
+        clickTile: clickTile,
+        showPopUp: showPopUp()
     };
-})(canways);
+})(conways);

@@ -25,6 +25,14 @@ document.getElementById('speed').addEventListener('change', function (e) {
     gameManager.setSpeed(e.srcElement.options[e.srcElement.selectedIndex].value);
 });
 
+document.getElementById('game').addEventListener('click', function (e) {
+    if (gameManager.currState() === gameManager.states.play) {
+        gameManager.showPopUp();
+        return;
+    }
+    gameManager.clickTile(e);
+});
+
 
 
 

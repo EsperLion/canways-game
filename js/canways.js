@@ -1,4 +1,4 @@
-var canways = (function () {
+var conways = (function () {
 
     var canvas = document.getElementById('game');
 
@@ -34,7 +34,7 @@ var canways = (function () {
         for (var i = 0; i < tilesOptions.rows; i++) {
             tiles[i] = [];
             for (var j = 0; j < tilesOptions.cols; j++) {
-                tiles[i][j] = _.random(100) > 65 ? true : false;
+                tiles[i][j] = _.random(100) > 45 ? true : false;
             }
         }
         initialTilesState = _.clone(tiles);
@@ -42,11 +42,11 @@ var canways = (function () {
 
     function drawTile (tile, x, y) {
         ctx.beginPath();
-        ctx.fillRect(x * tileSize, y * tileSize, tileSize, tileSize);
         if (tile)
             ctx.fillStyle = "#000000";
         else
             ctx.fillStyle = "#ffffff";
+        ctx.fillRect(x * tileSize, y * tileSize, tileSize, tileSize);
         ctx.fill();
     };
 
@@ -74,21 +74,22 @@ var canways = (function () {
     };
 
     function genTile (tile, x, y) {
-
-        var si = y - 1 < 0 ? 0 : y - 1;
-        var sj = x - 1 < 0 ? 0 : x - 1;
-        var iL = y + 1 > tilesOptions.rows - 1 ? tilesOptions.rows - 1 : y + 1;
-        var jL = x + 1 > tilesOptions.cols - 1 ? tilesOptions.cols - 1 : x + 1;
+        var cords = [];
         var k = 0;
-
-        for (var i = si; i <= iL; i++) {
-            for (var j = sj; j <= jL; j++) {
-                if (y !== i || x !== j) {
-                    if (tiles[i][j])
-                        k++;
-                }
+        for (var i = -1; i <= 1; i++) {
+            for (var j = -1; j <= 1; j++) {
+                if (y + i === y && x + j === x)
+                    continue;
+                cords.push({
+                    i: y + i < 0 ? tilesOptions.rows - 1 : y + i > tilesOptions.rows - 1 ? 0 : y + i,
+                    j: x + j < 0 ? tilesOptions.cols - 1 : x + j > tilesOptions.cols - 1 ? 0 : x + j
+                });
             }
         }
+
+        for (var i = 0; i < cords.length; i++)
+            if (tiles[cords[i].i][cords[i].j])
+                k++;
 
         if (tile) {
             if (k >= 2 && k <= 3)
@@ -107,11 +108,28 @@ var canways = (function () {
         tiles = _.clone(initialTilesState);
     };
 
+    function getMousePosition (e) {
+        var rect = canvas.getBoundingClientRect();
+        return {
+            x: e.clientX - rect.left,
+            y: e.clientY - rect.top
+        };
+    };
+
+    function changeTileState (e) {
+        var mousePos = getMousePosition(e);
+        var x = Math.floor(mousePos.x / tileSize);
+        var y = Math.floor(mousePos.y / tileSize);
+        tiles[y][x] = !tiles[y][x];
+        drawTile(tiles[y][x], x, y);
+    };
+
     return {
         config: configCanvas,
         generateNext: genNextGen,
         draw: drawTiles,
         generate: generateFiled,
-        retrieve: retrieveInitialState
+        retrieve: retrieveInitialState,
+        changeTileSate: changeTileState
     };
 })();
